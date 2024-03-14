@@ -1,0 +1,10 @@
+#!/bin/bash
+Taking input into the script:
+echo "Welcome to ACADA Bank"
+echo "Please Slot in your card"
+echo "Please Enter your pin"
+read num
+echo The pin you entered is $num
+echo "Is that correct"
+read num1
+echo login successfull
