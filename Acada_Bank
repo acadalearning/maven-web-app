@@ -7,4 +7,4 @@ read num
 echo The pin you entered is $num
 echo "Is that correct"
 read num1
-echo login successfull
+echo login successfully
