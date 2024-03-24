@@ -15,7 +15,7 @@ style="text-align: center;"align="center"<%@ page language="java" contentType="t
 	We offer interview preparations and job assitance,
 	The shout of the King is in our midst. His name is JESUS.  HE IS OUR SUCCESS ACCESS KEY. Jesus is Lord</h2>
 <hr>
-<div style="text-align: center;">
+<div style="text-align: center;"> 
 	<span>
 		<img src="images/DP black.png" alt="" width="100">
 	</span>
