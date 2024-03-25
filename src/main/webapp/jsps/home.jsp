@@ -20,7 +20,7 @@ style="text-align: center;"align="center"<%@ page language="java" contentType="t
 		<img src="images/DP black.png" alt="" width="100">
 	</span>
 	<span style="font-weight: bold;">
-		ACADA Learning, 
+		ACADA Learning Mary, 
 		Alberta, Calgary, Canada
 		+1 587 574 2233,
 		info@acadalearning.com
@@ -33,6 +33,7 @@ style="text-align: center;"align="center"<%@ page language="java" contentType="t
 <hr>
 <hr>
 <p style="text-align: center;">ACADA Learning - Consultant, Training, Development Center.</p>
+
 <p style="text-align: center;"><small>Copyrights 2022 by <a href="https://acadalearning.com/">ACADA Learning</a> </small></p>
 
 </body>
