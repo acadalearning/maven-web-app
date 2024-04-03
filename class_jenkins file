@@ -12,7 +12,7 @@ pipeline {
     stage('Gitclone'){
       steps {
         sh "echo Cloning from Git Repo"
-        git 'git@github.com:Maryspear/maven-web-app.git'
+        git 'https://github.com/Maryspear/maven-web-app.git'
       }
     }
     stage('Build'){
