@@ -22,7 +22,7 @@ pipeline {
     }
     stage('Test'){
       steps {
-        sh "mvn sonar:sonar"
+        sh "sonar:sonar"
       }
     }
     stage('NexusBackup'){
@@ -32,7 +32,7 @@ pipeline {
     }
     stage('DeploytoStag'){
       steps {
-        deploy adapters: [tomcat9(credentialsId: 'tomcat-cred', path: '', url: 'http://3.144.146.132:7000/')], contextPath: null, war: 'target/*.war'
+        deploy adapters: [tomcat9(credentialsId: 'tom7000_cred', path: '', url: 'http://3.144.146.132:7000/')], contextPath: null, war: 'target/*war'
       }
     }
     stage('DeployUAT'){
@@ -45,7 +45,7 @@ pipeline {
       }
     stage('DeploytoProd'){
       steps {
-        deploy adapters: [tomcat9(credentialsId: 'tomcat-cred', path: '', url: 'http://3.142.245.133:8082/')], contextPath: null, war: 'target/*.war'
+        deploy adapters: [tomcat9(credentialsId: 'Tomcat_credentials', path: '', url: 'http://3.142.245.133:8082/')], contextPath: null, war: 'target/*war'
       }
     }
   }
