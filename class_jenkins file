@@ -5,23 +5,23 @@ pipeline {
   }
   stages{
     stage('Initiation'){
-      step {
+      steps {
       sh "echo Building application"
       }
     }
     stage('Gitclone'){
-      step{
+      steps {
       sh "echo Cloning from Git Repo"
       git 'git@github.com:Maryspear/maven-web-app.git'
       }
     }
     stage('Build'){
-      step{
+      steps {
       sh "mvn package"
       }
     }
     stage('Test'){
-      step{
+      steps {
       sh "sonar:sonar"
       }
     }
