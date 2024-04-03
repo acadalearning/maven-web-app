@@ -22,7 +22,7 @@ pipeline {
     }
     stage('Test'){
       steps {
-        sh "sonar:sonar"
+        sh "mvn sonar:sonar"
       }
     }
     stage('NexusBackup'){
