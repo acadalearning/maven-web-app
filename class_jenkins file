@@ -1,4 +1,3 @@
-
 pipeline {
   agent any
   tools {
@@ -6,17 +5,25 @@ pipeline {
   }
   stages{
     stage('Initiation'){
+      step {
       sh "echo Building application"
+      }
     }
     stage('Gitclone'){
+      step{
       sh "echo Cloning from Git Repo"
       git 'git@github.com:Maryspear/maven-web-app.git'
+      }
     }
     stage('Build'){
+      step{
       sh "mvn package"
+      }
     }
     stage('Test'){
+      step{
       sh "sonar:sonar"
+      }
     }
     stage('NexusBackup'){
       sh "mvn deploy"
