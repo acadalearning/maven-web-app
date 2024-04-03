@@ -6,39 +6,47 @@ pipeline {
   stages{
     stage('Initiation'){
       steps {
-      sh "echo Building application"
+        sh "echo Building application"
       }
     }
     stage('Gitclone'){
       steps {
-      sh "echo Cloning from Git Repo"
-      git 'git@github.com:Maryspear/maven-web-app.git'
+        sh "echo Cloning from Git Repo"
+        git 'git@github.com:Maryspear/maven-web-app.git'
       }
     }
     stage('Build'){
       steps {
-      sh "mvn package"
+        sh "mvn package"
       }
     }
     stage('Test'){
       steps {
-      sh "sonar:sonar"
+        sh "sonar:sonar"
       }
     }
     stage('NexusBackup'){
-      sh "mvn deploy"
-    }
-    stage('DeploytoStag'){
-      deploy adapters: [tomcat9(credentialsId: 'tomcat-cred', path: '', url: 'http://172.31.38.123:7000/')], contextPath: null, war: 'target/*.war'
-    }
-    stage('DeployUAT'){
-      sh "echo depoying to staging"
-      timeout(time:5, unit:'DAYS'){
-        input message:'Approval for Production'
+      steps {
+        sh "mvn deploy"
       }
     }
+    stage('DeploytoStag'){
+      steps {
+        deploy adapters: [tomcat9(credentialsId: 'tomcat-cred', path: '', url: 'http://172.31.38.123:7000/')], contextPath: null, war: 'target/*.war'
+      }
+    }
+    stage('DeployUAT'){
+      steps {
+        sh "echo depoying to staging"
+        timeout(time:5, unit:'DAYS'){
+          input message:'Approval for Production'
+          }
+        }
+      }
     stage('DeploytoProd'){
-      deploy adapters: [tomcat9(credentialsId: 'tomcat-cred', path: '', url: 'http://172.31.9.116:8081/')], contextPath: null, war: 'target/*.war'
+      steps {
+        deploy adapters: [tomcat9(credentialsId: 'tomcat-cred', path: '', url: 'http://172.31.9.116:8081/')], contextPath: null, war: 'target/*.war'
+      }
     }
   }
 }
