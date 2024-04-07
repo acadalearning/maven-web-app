@@ -1,0 +1,13 @@
+# Define a function called 'my_function'
+define my_function
+	@echo "This is a function."
+	@echo "You can put multiple commands here."
+	@echo "For example, you can add:"
+	@echo "  - Command 1"
+	@echo "  - Command 2"
+endef
+
+# Target that uses the function
+my_target:
+	@echo "Running my_target"
+	$(call my_function)
