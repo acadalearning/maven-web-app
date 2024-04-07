@@ -1,0 +1,21 @@
+targetA:
+	@echo "This is function1 for target1."
+	@echo "You can put target-specific commands here."
+	@echo "For example, for target1, you can add:"
+	@echo "  - Command 1 for target1"
+	@echo "  - Command 2 for target1"
+
+
+targetB:
+	@echo "This is function2 for target2."
+	@echo "You can put target-specific commands here."
+	@echo "For example, for target2, you can add:"
+	@echo "  - Command 1 for target2"
+	@echo "  - Command 2 for target2"
+
+
+target1: targetA
+	@echo "Running Target 1"
+
+target2: targetB
+	@echo "Running Target 2"
