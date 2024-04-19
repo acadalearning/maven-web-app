@@ -38,4 +38,4 @@ FROM ubuntu:latest
 
 
 # Command to start Tomcat
-CMD ["catalina.sh", "run"
+CMD ["catalina.sh", "run"]
