@@ -1,5 +1,5 @@
 # Stage 1: Build Jenkins image
-FROM jenkins/jenkins:latest as jenkins_image
+FROM jenkins:2.60.3-alpine as jenkins_image
 
 # No additional build steps needed, as Jenkins image is already built
 
@@ -10,7 +10,7 @@ FROM maven:3.9.6-eclipse-temurin-17-alpine as maven_image
 WORKDIR /app
 
 # Install Git
-RUN apt-get update && apt-get install -y git
+RUN apt update && apt install -y git
 
 # Clone Git repository
 RUN git clone https://github.com/Maryspear/maven-web-app.git .
