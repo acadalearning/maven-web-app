@@ -5,16 +5,16 @@
 # No additional build steps needed, as Jenkins image is already built
 
 # Stage 3: Clone Git repository and build Maven image
-FROM maven:3.9.6-eclipse-temurin-17 as maven_image
+#FROM maven:3.9.6-eclipse-temurin-17 as maven_image
 
 # Set working directory
-WORKDIR /app
+#WORKDIR /app
 
 # Clone Git repository
-RUN git clone https://github.com/Maryspear/maven-web-app.git .
+#RUN git clone https://github.com/Maryspear/maven-web-app.git .
 
 # Build the Maven project
-RUN mvn clean package
+#RUN mvn clean package
 
 # Stage 4: Build SonarQube image
 FROM sonarqube:9.9.4-community as sonarqube_image
