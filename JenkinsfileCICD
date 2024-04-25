@@ -1,0 +1,22 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Build Docker Image') {
+            steps {
+                script {
+                    // Build Docker image from Dockerfile
+                    sh 'docker build -t dove .'
+                }
+            }
+        }
+        stage('Run Docker Container') {
+            steps {
+                script {
+                    // Run Docker container from the built image
+                    sh 'docker run -d --name  dove'
+                }
+            }
+        }
+    }
+}
