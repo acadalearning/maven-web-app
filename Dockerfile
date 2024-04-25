@@ -1,5 +1,3 @@
-RUN sudo rm -rf maven-web-app \
-&& git clone https://github.com/Maryspear/maven-web-app.git
 
 # Stage 1: Build Jenkins image
 FROM jenkins:2.60.3 as jenkins_image
