@@ -1,6 +1,6 @@
 
 # Stage 1: Build Jenkins image
-FROM jenkins:2.60.3 as jenkins_image
+#FROM jenkins:2.60.3 as jenkins_image
 
 # No additional build steps needed, as Jenkins image is already built
 
@@ -17,7 +17,7 @@ RUN git clone https://github.com/Maryspear/maven-web-app.git .
 RUN mvn clean package
 
 # Stage 4: Build SonarQube image
-FROM sonarqube:latest as sonarqube_image
+FROM sonarqube:9.9.4-community as sonarqube_image
 
 # No additional build steps needed, as SonarQube image is already built
 
