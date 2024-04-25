@@ -1,5 +1,6 @@
+
 # Stage 1: Build Jenkins image
-FROM jenkins:2.60.3-alpine as jenkins_image
+FROM jenkins:2.60.3 as jenkins_image
 
 # No additional build steps needed, as Jenkins image is already built
 
@@ -29,9 +30,6 @@ FROM sonatype/nexus3:3.67.1-java11 as nexus_image
 FROM tomcat:9.0.88-jdk8-corretto as tomcat_image
 
 # No additional build steps needed, as Tomcat image is already built
-
-# Stage 7: Final image
-FROM ubuntu:latest
 
 
 # Command to start Tomcat
