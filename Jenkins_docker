@@ -25,8 +25,6 @@ pipeline{
         sh "docker build -t Dockerfile_nex ."
         sh "docker build -t Dockerfile_tom ."
         //sh "docker push joveluro/maven-web-app:latest"
-        //sh "docker push joveluro/maven-web-app:latest"
-        //sh "docker push joveluro/maven-web-app:latest"
         sh "docker run --name sona -d -p 9000:9000 sonarqube:9.9.4-community"
         sh "docker run --name nex -d -p 8081:8081 sonatype/nexus3:3.67.1-java11"
         sh "docker run --name tom -d -p 8000:8080 tomcat:9.0.88-jdk8-corretto"
