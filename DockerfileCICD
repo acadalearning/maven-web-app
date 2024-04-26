@@ -14,7 +14,7 @@ RUN mvn package
 FROM sonarqube:9.9.4-community as test
 WORKDIR /app
 COPY --from=build /app/target/*.war /app
-RUN sonar-scanner -Dsonar.host.url=<SonarQube URL> -Dsonar.projectKey=myProjectKey
+RUN sonar-scanner -Dsonar.host.url=<http://172.18.0.3:9000/> -Dsonar.projectKey=myProjectKey
 
 # Deploy to Nexus (replace with appropriate deployment command)
 FROM sonatype/nexus3:3.67.1-java11 as nexus
