@@ -29,3 +29,4 @@ RUN mv /usr/local/tomcat/webapps.dist /usr/local/tomcat/webapps
 COPY --from=nexus /app/*.war /usr/local/tomcat/webapps
 
 CMD ["catalina.sh", "run"]
+
