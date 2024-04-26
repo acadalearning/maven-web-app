@@ -11,6 +11,7 @@ pipeline{
         echo 'cloning done'
       }
     }
+    /*
     stage('Predeployment'){ 
         steps{ 
         sh "echo remove existing docker image" 
@@ -30,6 +31,7 @@ pipeline{
         sh "docker run --name tom -d -p 8000:8080 tomcat:9.0.88-jdk8-corretto"
         } 
     }
+    */
     stage('Build with Maven'){
       steps{
         echo 'Building with Maven'
