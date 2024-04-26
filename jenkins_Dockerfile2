@@ -21,7 +21,7 @@ pipeline{
         //sh "docker rm -f myapp:v1.0.0"
         //sh "docker rmi -f app1"
         sh "echo Build docker image"
-        sh "docker build -t myapp:v1.0.0 -f DockerfileCICD ."
+        sh "docker build -t myapp:v1.0.0 -f Dockerfile ."
         sh "echo push docker image"
         //sh "docker push myapp:v1.0.0"
         sh "echo Run a container"
