@@ -37,6 +37,15 @@ pipeline{
         echo 'Building done'
       }
     }  
+    stage('Approval'){
+      steps{
+        echo 'Seeking approval'
+        echo 'Sending email to team lead'
+        timeout(time: 5, unit: "DAYS"){
+          input message: 'Approve to deploy for testing'
+        }
+      }
+    }
     stage('Test with Sonarqube'){
       steps{
         echo 'Testing started'
