@@ -14,9 +14,9 @@ pipeline{
     stage('Predeployment'){ 
         steps{ 
         sh "echo remove existing docker image" 
-        #removing all images:
+        //removing all images:
         sh "docker rmi -f $(docker images -aq)"
-        #removing all containers:
+        //removing all containers:
         sh "docker rm -f $(docker ps -aq)"
         //sh "docker rm -f myapp:v1.0.0"
         //sh "docker rmi -f app1"
