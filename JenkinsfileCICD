@@ -6,7 +6,7 @@ pipeline {
             steps {
                 script {
                     // Build Docker image from Dockerfile
-                    sh 'docker build -t dove .'
+                    sh 'docker build -t dove:v1.0.0 .'
                 }
             }
         }
@@ -14,7 +14,7 @@ pipeline {
             steps {
                 script {
                     // Run Docker container from the built image
-                    sh 'docker run -d --name  dove'
+                    sh 'docker run -d --name  dove:v1.0.0'
                 }
             }
         }
