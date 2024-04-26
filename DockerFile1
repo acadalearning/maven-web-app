@@ -1,41 +1,54 @@
-# Base image for SonarQube Scanner
-FROM maven:3.9.6-openjdk-11-slim AS sonarqube
+# Base image
+FROM ubuntu
 
-# Install SonarQube Scanner
-RUN apt-get update && \
-    apt-get install -y unzip && \
-    wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.6.2.2472-linux.zip && \
-    unzip sonar-scanner-cli-4.6.2.2472-linux.zip && \
-    rm sonar-scanner-cli-4.6.2.2472-linux.zip
-ENV PATH="/sonar-scanner-cli-4.6.2.2472-linux/bin:${PATH}"
+# Install dependencies
+RUN apt-get update && apt-get install -y \
+    git \
+    wget \
+    unzip \
+    zip \
+    openjdk-17-jre
 
-# Base image for Nexus
-FROM sonatype/nexus3:3.67.1 AS nexus
+# Install Jenkins
+RUN wget -q -O - https://pkg.jenkins.io/debian/jenkins.io.key | gpg --dearmor | tee /usr/share/keyrings/jenkins.gpg > /dev/null
+RUN echo 'deb https://pkg.jenkins.io/debian-stable binary/' > /etc/apt/sources.list.d/jenkins.list
+RUN apt-get update && apt-get install -y jenkins && systemctl start jenkins
 
-# Configure Nexus (if necessary)
-# Example:
-# COPY nexus_config.yml /nexus-data/etc/nexus-default.properties
+# Allow Jenkins sudo without password
+RUN echo "jenkins  ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
+RUN echo "jenkins:admin" | chpasswd
 
-# Main build stage
-FROM maven:3.9.6-openjdk-11-slim AS build
+# Enable SSH password authentication
+RUN sed -i "/^[^#]*PasswordAuthentication[[:space:]]no/c\PasswordAuthentication yes" /etc/ssh/sshd_config \
+    && service ssh restart \
+    && usermod -aG docker jenkins
 
-# Copy the source code
+# Clone the repository
+FROM alpine/git as clone
 WORKDIR /app
-COPY . .
+RUN git clone https://github.com/acadalearning/web-app.git
 
 # Build the application
-RUN mvn clean package
+FROM maven:3.9.6-amazoncorretto as build
+WORKDIR /app
+COPY --from=clone /app/web-app /app
+RUN mvn package
 
-# Test with SonarQube scanner
-COPY --from=sonarqube /sonar-scanner-cli-4.6.2.2472-linux /sonar-scanner-cli-4.6.2.2472-linux
-RUN sonar-scanner -Dsonar.host.url=http://sonarqube:9000 -Dsonar.projectKey=myProjectKey
+# Run SonarQube analysis
+FROM sonarqube:9.9.4-community as test
+WORKDIR /app
+COPY --from=build /app/target/*.war /app
+RUN sonar:sonar
 
-# Deploy to Nexus (Replace with appropriate deployment command)
+# Deploy to Nexus
+FROM sonatype/nexus3:3.67.1-java11 as nexus
+WORKDIR /app
+COPY --from=test /app/*.war /app
 COPY --from=nexus /nexus-data /nexus-data
-RUN mvn deploy:deploy-file -Durl=http://nexus:8081/repository/maven-releases/ -Dfile=target/*.war -DgroupId=<group-id> -DartifactId=<artifact-id> -Dversion=<version> -Dpackaging=war
+RUN deploy
 
 # Deploy to Tomcat
-FROM tomcat:8.0.20-jre8 AS deploy
+FROM tomcat:8.0.20-jre8 as deploy
 RUN mv /usr/local/tomcat/webapps /usr/local/tomcat/webapps2
 RUN mv /usr/local/tomcat/webapps.dist /usr/local/tomcat/webapps
-COPY --from=build /app/target/*.war /usr/local/tomcat/webapps
+COPY --from=nexus /app/*.war /usr/local/tomcat/webapps
