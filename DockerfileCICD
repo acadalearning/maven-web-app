@@ -10,17 +10,17 @@ WORKDIR /app
 COPY --from=clone /app/web-app /app
 RUN mvn package
 
-# Run SonarQube analysis
+# Run SonarQube analysis (replace <SonarQube URL> with actual SonarQube server URL)
 FROM sonarqube:9.9.4-community as test
 WORKDIR /app
 COPY --from=build /app/target/*.war /app
-RUN sonar:sonar
+RUN sonar-scanner -Dsonar.host.url=<SonarQube URL> -Dsonar.projectKey=myProjectKey
 
-# Deploy to Nexus
+# Deploy to Nexus (replace with appropriate deployment command)
 FROM sonatype/nexus3:3.67.1-java11 as nexus
 WORKDIR /app
 COPY --from=test /app/*.war /app
-RUN deploy
+RUN mvn deploy:deploy-file -Durl=<Nexus URL> -DrepositoryId=<Nexus Repo ID> -Dfile=<artifact-file-path> -DgroupId=<group-id> -DartifactId=<artifact-id> -Dversion=<version> -Dpackaging=war
 
 # Deploy to Tomcat
 FROM tomcat:8.0.20-jre8 as deploy
@@ -28,4 +28,4 @@ RUN mv /usr/local/tomcat/webapps /usr/local/tomcat/webapps2
 RUN mv /usr/local/tomcat/webapps.dist /usr/local/tomcat/webapps
 COPY --from=nexus /app/*.war /usr/local/tomcat/webapps
 
-CMD [“catalina.sh”, “run”]
+CMD ["catalina.sh", "run"]
