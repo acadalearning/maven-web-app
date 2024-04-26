@@ -33,4 +33,4 @@ FROM tomcat:9.0.88-jdk8-corretto as tomcat_image
 
 
 # Command to start Tomcat
-CMD ["catalina.sh", "run"]
+#
