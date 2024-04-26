@@ -28,9 +28,11 @@ FROM sonatype/nexus3:3.67.1-java11 as nexus_image
 
 # Stage 6: Build Tomcat image
 FROM tomcat:9.0.88-jdk8-corretto as tomcat_image
+RUN mv /usr/local/tomcat/webapps /usr/local/tomcat/webapps2
+RUN mv /usr/local/tomcat/webapps.dist /usr/local/tomcat/webapps
 
 # No additional build steps needed, as Tomcat image is already built
 
 
 # Command to start Tomcat
-#
+CMD ["catalina.sh", "run"]
