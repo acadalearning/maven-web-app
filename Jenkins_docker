@@ -1,7 +1,7 @@
 pipeline{
   agent any
   tools {
-    maven 'maven3.8.8'
+    maven 'maven 3.9.6'
   }
   stages{
     stage('Clone from Github'){
@@ -15,9 +15,9 @@ pipeline{
         steps{ 
         sh "echo Build docker image" 
         #removing all images:
-        sh "docker rmi -f $(docker images -aq)"
+        sh "docker rmi -f ${docker images -aq}"
         #removing all containers:
-        sh "docker rm -f $(docker ps -aq)"
+        sh "docker rm -f ${docker ps -aq}"
         //sh "docker rm -f tom"
         //sh "docker rm -f sona"
         //sh "docker rmi -f sonarqube:9.9.4-community"
