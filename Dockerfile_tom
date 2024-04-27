@@ -1,0 +1,4 @@
+FROM tomcat:9.0.88-jdk8-corretto as deploy
+RUN mv /usr/local/tomcat/webapps /usr/local/tomcat/webapps2
+RUN mv /usr/local/tomcat/webapps.dist /usr/local/tomcat/webapps
+EXPOSE 8080
