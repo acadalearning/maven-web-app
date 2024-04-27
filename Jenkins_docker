@@ -11,32 +11,50 @@ pipeline{
         echo 'cloning done'
       }
     }
-    stage(' Predeployment'){ 
+    /*
+    stage('Predeployment'){ 
         steps{ 
-        sh "echo Build docker image" 
-        #removing all images:
-        sh "docker rmi -f ${docker images -aq}"
-        #removing all containers:
-        sh "docker rm -f ${docker ps -aq}"
-        //sh "docker rm -f tom"
-        //sh "docker rm -f sona"
-        //sh "docker rmi -f sonarqube:9.9.4-community"
-        sh "docker build -t sonarqube:9.9.4-community ."
-        sh "docker build -t sonatype/nexus3:3.67.1-java11 ."
-        sh "docker build -t tomcat:9.0.88-jdk8-corretto ."
-        //sh "docker push joveluro/maven-web-app:latest"
-        sh "docker run --name sona -d -p 9000:9000 sonarqube:9.9.4-community"
-        sh "docker run --name nex -d -p 8081:8081 sonatype/nexus3:3.67.1-java11"
-        sh "docker run --name tom -d -p 8000:8080 tomcat:9.0.88-jdk8-corretto"
+        /*
+        sh "echo remove existing docker image" 
+        //removing all images:
+        sh "docker rmi -f sonarqube:9.9.4-community"
+        sh "docker rmi -f sonatype/nexus3:3.67.1-java11"
+        sh "docker rmi -f tomcat:9.0.88-jdk8-corretto"
+        //removing all containers: 
+        sh "docker rmi -f sona"
+        sh "docker rmi -f nex"
+        sh "docker rmi -f tom"
+        */
+        //Build container:
+        sh "echo Build docker image"
+        sh "docker build -t sonarqube:9.9.4-community -f Dockerfile_sona ."
+        sh "docker build -t sonatype/nexus3:3.67.1-java11 -f Dockerfile_nexus ."
+        sh "docker build -t tomcat:9.0.88-jdk8-corretto -f Dockerfile_tom ."
+        //sh "echo push docker image"
+        //sh "docker push myapp:v1.0.0"
+       // Build container:
+        sh "echo Run a container"
+        sh "docker run --name sona -d -p 9000:9000 --network dev sonarqube:9.9.4-community"
+        sh "docker run --name nex -d -p 8081:8081 --network dev sonatype/nexus3:3.67.1-java11"
+        sh "docker run --name tom -d -p 8000:8080 --network dev tomcat:9.0.88-jdk8-corretto"
         } 
     }
     stage('Build with Maven'){
       steps{
         echo 'Building with Maven'
-        sh 'mvn package'
+        sh 'mvn clean package'
         echo 'Building done'
       }
     }  
+    stage('Approval'){
+      steps{
+        echo 'Seeking approval'
+        echo 'Sending email to team lead'
+        timeout(time: 5, unit: "DAYS"){
+          input message: 'Approve to deploy for testing'
+        }
+      }
+    }
     stage('Test with Sonarqube'){
       steps{
         echo 'Testing started'
