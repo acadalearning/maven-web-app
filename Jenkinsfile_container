@@ -2,10 +2,17 @@ pipeline {
     agent any
     
     stages {
+        stage('Clone from Github'){
+            steps {
+                echo 'Cloning from GitHub'
+                git 'https://github.com/Maryspear/maven-web-app.git'
+                echo 'cloning done'
+            }
+        }
+    }
         stage('Build docker image') {
             steps {
-                script {
-                    sh "docker build -t jenkins:v1.0.0 -f Dockerfile1 ."
+                sh "docker build -t jenkins:v1.0.0 -f Dockerfile1 ."
                 }
             }
         }
@@ -19,4 +26,4 @@ pipeline {
             }
         }
     }
-} 
+}        
