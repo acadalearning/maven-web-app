@@ -30,16 +30,4 @@ RUN sed -i "/^[^#]*PasswordAuthentication[[:space:]]no/c\PasswordAuthentication 
     && service ssh restart \
     && usermod -aG docker jenkins
 
-# Multi-line comment
-# /*
-# # Clone the repository
-# FROM alpine/git as clone
-# WORKDIR /app
-# RUN git clone https://github.com/acadalearning/web-app.git
 
-# # Build the application
-# FROM maven:3.9.6-amazoncorretto as build
-# WORKDIR /app
-# COPY --from=clone /app/web-app /app
-# RUN mvn package
-# */
