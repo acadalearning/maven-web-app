@@ -9,20 +9,16 @@ pipeline {
                 echo 'cloning done'
             }
         }
-    }
+    
         stage('Build docker image') {
             steps {
                 sh "docker build -t jenkins:v1.0.0 -f Dockerfile1 ."
-                }
             }
         }
         stage('Build docker container') {
             steps {
-                script {
-                    sh "echo Run a container"
-                    sh " docker run --name jen -d -p 8082:8080 \
-                    --network dev sonarqube:9.9.4-community"
-                }
+                sh "echo Run a container"
+                sh " docker run --name jen -d -p 8082:8080 \ --network dev sonarqube:9.9.4-community"
             }
         }
     }
