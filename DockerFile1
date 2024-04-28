@@ -9,13 +9,9 @@ RUN apt-get update && apt-get install -y \
     zip \
     openjdk-17-jre
 
+# Install Jenkins GPG key
+RUN wget -q -O - https://pkg.jenkins.io/debian/jenkins.io.key | apt-key add -
 # Install Jenkins
-RUN curl -fsSL https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key | sudo tee \
-  /usr/share/keyrings/jenkins-keyring.asc > /dev/null
-RUN echo deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc] \
-  https://pkg.jenkins.io/debian-stable binary/ | sudo tee \
-  /etc/apt/sources.list.d/jenkins.list > /dev/null
-RUN wget -q -O - https://pkg.jenkins.io/debian/jenkins.io.key | gpg --dearmor | tee /usr/share/keyrings/jenkins.gpg > /dev/null
 RUN echo 'deb https://pkg.jenkins.io/debian-stable binary/' > /etc/apt/sources.list.d/jenkins.list
 RUN apt-get update && apt-get install -y jenkins && systemctl start jenkins
 
