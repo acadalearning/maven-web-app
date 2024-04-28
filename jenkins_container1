@@ -12,7 +12,7 @@ pipeline {
     
         stage('Build Docker image') {
             steps {
-                sh "docker build -t jenkins:v1.0.0 -f DockerFile2 ."
+                sh "docker build -t jenkins:v1.0.0 -f Dockerfile2 ."
             }
         }
         
