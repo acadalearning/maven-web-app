@@ -1,4 +1,4 @@
-    # Base image
+# Base image
 FROM ubuntu
 
 # Install dependencies
@@ -9,7 +9,7 @@ RUN apt-get update && apt-get install -y \
     unzip \
     zip \
     openjdk-17-jre \
-    openssh-server   # Install SSH server
+    #openssh-server   # Install SSH server
 
 # Install Jenkins GPG key
 RUN wget -q -O - https://pkg.jenkins.io/debian/jenkins.io.key | apt-key add -
