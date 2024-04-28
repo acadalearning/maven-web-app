@@ -8,6 +8,7 @@ RUN apt-get update && apt-get install -y \
     wget \
     unzip \
     zip \
+    curl \
     openjdk-17-jre \
     openssh-server 
 
