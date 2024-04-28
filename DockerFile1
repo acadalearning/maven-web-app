@@ -4,41 +4,30 @@ FROM ubuntu
 # Install dependencies
 RUN apt-get update && apt-get install -y \
     gnupg \
-    git \
     wget \
     unzip \
     zip \
-    openjdk-17-jre
+    openjdk-17-jre \
+    openssh-server   # Install SSH server
 
 # Install Jenkins GPG key
 RUN wget -q -O - https://pkg.jenkins.io/debian/jenkins.io.key | apt-key add -
+
 # Install Jenkins
-RUN echo 'deb https://pkg.jenkins.io/debian-stable binary/' > /etc/apt/sources.list.d/jenkins.list
-RUN apt-get update && apt-get install -y jenkins && service jenkins start
+RUN echo 'deb https://pkg.jenkins.io/debian-stable binary/' > /etc/apt/sources.list.d/jenkins.list \
+$$ apt-get update && apt-get install -y jenkins
 
 # Start Jenkins
-#RUN service jenkins start
+RUN service jenkins start
 
 # Allow Jenkins sudo without password
-RUN echo "jenkins  ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
-RUN echo "jenkins:admin" | chpasswd
+RUN echo "jenkins  ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers \
+&& echo "jenkins:admin" | chpasswd
 
 # Enable SSH password authentication
-RUN sed -i "/^[^#]*PasswordAuthentication[[:space:]]no/c\PasswordAuthentication yes" /etc/ssh/sshd_config \
+RUN sed -i 's/#PasswordAuthentication yes/PasswordAuthentication yes/' /etc/ssh/sshd_config \
     && service ssh restart \
     && usermod -aG docker jenkins
 
-# Clone the repository
-#FROM alpine/git as clone
-#WORKDIR /app
-#RUN git clone https://github.com/acadalearning/web-app.git
-
-
-# Build the application
-#FROM maven:3.9.6-amazoncorretto as build
-#WORKDIR /app
-#COPY --from=clone /app/web-app /app
-#RUN mvn package
-
-# Expose Jenkins port
-EXPOSE 8080
+# Expose Jenkins and SSH ports
+EXPOSE 8080 22
