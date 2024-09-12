@@ -1,0 +1,2 @@
+# Run SonarQube analysis
+FROM sonarqube:9.9.4-community as test

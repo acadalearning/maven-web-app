@@ -1,0 +1,74 @@
+pipeline{
+  agent any
+  tools {
+    maven 'maven 3.9.6'
+  }
+  stages{
+    stage('Clone from Github'){
+      steps {
+        echo 'Cloning from GitHub'
+        git 'https://github.com/Maryspear/maven-web-app.git'
+        echo 'cloning done'
+      }
+    }
+    /*
+    stage('Predeployment'){ 
+        steps{ 
+        sh "echo remove existing docker image" 
+        //removing all images:
+        //sh "docker rmi -f \$(docker images -aq)"
+        //removing all containers:
+        //sh "docker rm -f \$(docker ps -aq)"
+        //sh "docker rm -f myapp:v1.0.0"
+        //sh "docker rmi -f app1"
+        sh "echo Build docker image"
+        sh "docker build -t myapp:v1.0.0 -f Dockerfile ."
+        sh "echo push docker image"
+        //sh "docker push myapp:v1.0.0"
+        sh "echo Run a container"
+        sh "docker run --name sona -d -p 9000:9000 sonarqube:9.9.4-community"
+        sh "docker run --name nex -d -p 8081:8081 sonatype/nexus3:3.67.1-java11"
+        sh "docker run --name tom -d -p 8000:8080 tomcat:9.0.88-jdk8-corretto"
+        } 
+    }
+    */
+    stage('Build with Maven'){
+      steps{
+        echo 'Building with Maven'
+        sh 'mvn clean package'
+        echo 'Building done'
+      }
+    }  
+    stage('Approval'){
+      steps{
+        echo 'Seeking approval'
+        echo 'Sending email to team lead'
+        timeout(time: 5, unit: "DAYS"){
+          input message: 'Approve to deploy for testing'
+        }
+      }
+    }
+    stage('Test with Sonarqube'){
+      steps{
+        echo 'Testing started'
+        sh 'mvn sonar:sonar'
+        echo 'Test done'
+      }
+    }
+    stage('Deploying to Nexus'){
+      steps{
+        echo 'Deploying to Nexus'
+        sh 'mvn deploy'
+        echo 'Deployment to Nexu successful'
+      }
+    }
+    stage('Deploying to Tomcat'){
+      steps{
+        echo 'Deploying to Tomcat'
+        deploy adapters: [tomcat9(credentialsId: 'Tomcat_credentials', path: '', url: 'http://3.84.168.180:7000/')], contextPath: null, war: 'target/*war'
+        echo 'Deployment successful'
+      }
+    }
+  }
+}
+

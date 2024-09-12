@@ -1,0 +1,2 @@
+# Deploy to Nexus
+FROM sonatype/nexus3:3.67.1-java11 as nexus

@@ -1,0 +1,29 @@
+# Clone the repository
+FROM alpine/git as clone
+WORKDIR /app
+RUN git clone https://github.com/acadalearning/web-app.git
+
+# Build the application
+FROM maven:3.9.6-amazoncorretto as build
+WORKDIR /app
+COPY --from=clone /app/web-app /app
+RUN mvn clean package
+
+# Run SonarQube tests
+FROM maven:3.9.6-amazoncorretto as test
+WORKDIR /app
+COPY --from=build /app/target/*.war /app
+RUN mvn sonar:sonar
+
+# Deploy to Nexus
+FROM sonatype/nexus3:3.67.1-java11 as nexus
+WORKDIR /app
+COPY --from=test /app/*.war /app
+
+# Deploy to Tomcat
+FROM tomcat:8.0.20-jre8 as deploy
+RUN mv /usr/local/tomcat/webapps /usr/local/tomcat/webapps2
+RUN mv /usr/local/tomcat/webapps.dist /usr/local/tomcat/webapps
+COPY --from=nexus /app/*.war /usr/local/tomcat/webapps
+
+CMD [“catalina.sh”, “run”]

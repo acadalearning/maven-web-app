@@ -1,0 +1,52 @@
+pipeline {
+  agent any
+  tools {
+    maven 'maven3.9.6'
+  }
+  stages{
+    stage('Initiation'){
+      steps {
+        sh "echo Building application"
+      }
+    }
+    stage('Gitclone'){
+      steps {
+        sh "echo Cloning from Git Repo"
+        git 'https://github.com/Maryspear/maven-web-app.git'
+      }
+    }
+    stage('Build'){
+      steps {
+        sh "mvn package"
+      }
+    }
+    stage('Test'){
+      steps {
+        sh "mvn sonar:sonar"
+      }
+    }
+    stage('NexusBackup'){
+      steps {
+        sh "mvn deploy"
+      }
+    }
+    stage('DeploytoStag'){
+      steps {
+        deploy adapters: [tomcat9(credentialsId: 'tom7000_cred', path: '', url: 'http://3.144.146.132:7000/')], contextPath: null, war: 'target/*war'
+      }
+    }
+    stage('DeployUAT'){
+      steps {
+        sh "echo depoying to staging"
+        timeout(time:5, unit:'DAYS'){
+          input message:'Approval for Production'
+          }
+        }
+      }
+    stage('DeploytoProd'){
+      steps {
+        deploy adapters: [tomcat9(credentialsId: 'Tomcat_credentials', path: '', url: 'http://3.142.245.133:8082/')], contextPath: null, war: 'target/*war'
+      }
+    }
+  }
+}

@@ -1,0 +1,26 @@
+pipeline {
+    agent any
+    
+    stages {
+        stage('Clone from GitHub'){
+            steps {
+                echo 'Cloning from GitHub'
+                git 'https://github.com/Maryspear/maven-web-app.git'
+                echo 'Cloning done'
+            }
+        }
+    
+        stage('Build Docker image') {
+            steps {
+                sh "docker build -t jenkins:v1.0.0 -f DockerFile1 ."
+            }
+        }
+        
+        stage('Run Docker container') {
+            steps {
+                sh "echo 'Run a container'"
+                sh "docker run --name jen -d -p 8082:8080 --network dev jenkins:v1.0.0"
+            }
+        }
+    }
+}   
