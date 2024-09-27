@@ -1,19 +1,19 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
+<html lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>acadalearning.com- Home Page</title>
 <link href="images/DP black.png" rel="icon">
 </head>
-</head>
+
 <body>
-<h1 align="center">ACADA Learning</h1>
-<h2 align="center"> Welcome to ACADA Learning. 
+<h1 style="text-align: center;">ACADA Learning</h1>
+<h2 style="text-align: center;"> Welcome to ACADA Learning. 
 	ACADA Learning is a an ideal online training  platform for DevOps and Cloud Engineers. 
 	We offer interview preparations and job assitance,
-	The shout of the King is in our midst. His name is JESUS.  HE IS OUR SUCCESS ACCESS KEY. Jesus is Lord</h2>
+	The shout of the King is in our midst. His name is JESUS.  HE IS OUR SUCCESS ACCESS KEY. Jesus is Lord. Halleluyah, Amen.</h2>
 <hr>
 <div style="text-align: center;">
 	<span>
@@ -32,8 +32,8 @@
 	<p> Service : <a href="services/employee/getEmployeeDetails">Get Employee Details </p>
 <hr>
 <hr>
-<p align=center>ACADA Learning - Consultant, Training, Development Center.</p>
-<p align=center><small>Copyrights 2022 by <a href="https://acadalearning.com/">ACADA Learning</a> </small></p>
+<p style="text-align: center;">ACADA Learning - Consultant, Training, Development Center.</p>
+<p style="text-align: center;"><small>Copyrights 2022 by <a href="https://acadalearning.com/">ACADA Learning</a> </small></p>
 
 </body>
 </html>
